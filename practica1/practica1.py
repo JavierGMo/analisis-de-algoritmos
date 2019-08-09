@@ -62,11 +62,11 @@ def datos2():
 	#y ese no es el caso, entonces se agrega las comas para hacer un split y poder pasar esos numero grandes en la matriz
 	while i < tam:
 
-		j +=1
+		#j +=1
 		
 		s += hola[i]
 		i += 1
-		if i == j and i != tam:
+		if i != tam:
 			s += ','
 	print(s)
 	#se seaparan los numeros de las comas asi quedandonos solo con los numeros
