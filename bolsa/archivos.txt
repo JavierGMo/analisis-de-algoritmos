@@ -1,0 +1,12 @@
+nombre1,1GB,9000500
+nombre1,3GB,23500
+nombre1,4GB,231500
+nombre1,2GB,1234500
+nombre1,1GB,124500
+nombre1,9GB,532300
+nombre1,10GB,53200
+nombre1,16GB,5500
+nombre1,1GB,8234500
+nombre1,2GB,500
+nombre1,9GB,8234500
+nombre1,8GB,8234500
