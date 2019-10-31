@@ -39,16 +39,71 @@ class Archivo{
 }
 //Modulos
 
-function leer_archivo($value=''){
-	return "Hola";
+function leer_archivo($nombre_archivo){
+	$archivos_array = array();
+	$archivo_leido = fopen($nombre_archivo.".txt", "r");
+	if($archivo_leido!=null){
+		while(!feof($archivo_leido)){
+			$linea = fgets($archivo_leido);
+			$temp_array = preg_split('[,]', $linea);
+			//$archivos_array[] = $temp_array;
+			$archivos_array[] = new Archivo($temp_array[0], $temp_array[1], $temp_array[2]);
+		}
+	}
+	fclose($archivo_leido);
+
+	return $archivos_array;
 }
 //se quitan todos los archivos mayores a 8
-function limpieza_uno($value=''){
-	return "Hola";
+function limpieza_uno($archivos_array, $tam_array_archivos){
+	
+	$array_temporal = array();
+	$i = 0;
+	while($i<$tam_array_archivos){
+		if($archivos_array[$i]->get_peso()<=8){
+			$array_temporal[] = $archivos_array[$i];
+		}
+		++$i;
+	}
+	//var_dump($array_temporal);
+	return $array_temporal;
 }
 
-function permutaciones($value=''){
-	return "Hola";
+function permutaciones($archivos_array, $tam_array_archivos){
+	//Permutaciones de valores por peso de archivo
+	$i = 0;
+	$j = 0;
+	$n = 0;
+	$var_espera = 0;
+	$ocurrencias = 0;
+	$combinaciones_maximas = 3;
+	$ocurencias_array = array();
+	$temp_array = array();
+	$b = $tam_array_archivos -1;
+
+	//Hacer variacion sin repeticion o con repeticion
+	//Numero de combinaciones
+	for ($k=0; $k<$combinaciones_maximas; $k++){ 
+		$n = ($n*$b) + $b;
+	}
+	echo "<br><br>"."combinaciones:".$n."<br>";
+	for ($i=30; $i<=$n; $i++) { 
+		$ocurrencias = $i;
+		do {
+			$var_espera = $ocurrencias%$b;
+			if($var_espera == 0){
+				$ocurencias_array[] = $archivos_array[$b];
+				$ocurrencias = $ocurrencias/$b-1;
+			}else{
+				$ocurencias_array[] = $archivos_array[$var_espera];
+				$ocurrencias = $ocurrencias/$b;
+			}
+		} while ($ocurrencias>0);
+		$temp_array[] = $ocurencias_array;
+		$ocurencias_array = array();
+	}
+	$ocurencias_array = null;
+	return $temp_array;
 }
 //fin modulos
 
@@ -60,68 +115,27 @@ $i = 0;
 $j = 0;
 $n = 0;
 $var_espera = 0;
-$combinaciones_maximas = 5;
+$combinaciones_maximas = 3;
 $ocurencias_array = array();
+$temp_array = array();
 //fin variables
 
 //Lectura del archivo
-$archivo_leido = fopen("archivos.txt", "r");
-
-
-if($archivo_leido!=null){
-	while(!feof($archivo_leido)){
-		$linea = fgets($archivo_leido);
-		$temp_array = preg_split('[,]', $linea);
-		//$archivos_array[] = $temp_array;
-		$archivos_array[] = new Archivo($temp_array[0], $temp_array[1], $temp_array[2]);
-	}
-}
-fclose($archivo_leido);
-
+$archivos_array = leer_archivo("archivos");
 $tam_array_archivos = count($archivos_array);
+
 
 //Limpiar el arreglo quitando valores pesos mayores a 8
-while($i<$tam_array_archivos){
-	if($archivos_array[$i]->get_peso()<=8){
-		$array_temporal[] = $archivos_array[$i];
-	}
-	++$i;
-}
+$archivos_array =  limpieza_uno($archivos_array, $tam_array_archivos);
 
-$archivos_array = $array_temporal;
+//destruimos objetos
 $array_temporal = array();
-$i = 0;
+
 $tam_array_archivos = count($archivos_array);
 
-//Permutaciones de valores por peso de archivo
 
 
-$b = $tam_array_archivos -1;
-
-//Hacer variacion sin repeticion o con repeticion
-//Numero de combinaciones
-for ($k=0; $k<$combinaciones_maximas; $k++){ 
-	$n = ($n*$b) + $b;
-}
-
-for ($i=1; $i<=3; $i++) { 
-	$ocurrencias = $i;
-	do {
-		$var_espera = $ocurrencias%$b;
-		if($var_espera == 0){
-			$ocurencias_array[] = $archivos_array[$b];
-			$ocurrencias = $ocurrencias/$b-1;
-		}else{
-			$ocurencias_array[] = $archivos_array[$var_espera];
-			$ocurrencias = $ocurrencias/$b;
-		}
-	} while ($ocurrencias>0);
-	$temp_array[] = $ocurencias_array;
-	$ocurencias_array = array();
-}
-$ocurencias_array = null;
-
-
+$temp_array = permutaciones($archivos_array, $tam_array_archivos);
 
 
 
@@ -138,13 +152,11 @@ loop i:
 			temp_array[] = archivos_array[j];
 			suma_pesos += archivos_array[i];
 		}
-
-
 */
 echo "<br>Repeticiones combinaciones<br>";
-print_r($temp_array);
-echo "<br>Archivos arrya<br>";
-print_r($archivos_array);
+var_dump($temp_array);
+// echo "<br>Archivos arrya<br>";
+// print_r($archivos_array);
 
 
 
